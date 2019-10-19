@@ -1,0 +1,31 @@
+{
+  "version": "0.1.0",
+  "name": "AlterStore Alpha",
+  "description": "The Alter(native)Store client for KaiOS.",
+  "launch_path": "/home.html",
+  "orientation": "default",
+  "theme_color": "#800080",
+  "origin": "app://alterstore.jkelol111.me",
+  "icons": {
+    "16": "/assets/icons/store16x16.png",
+    "56": "/assets/icons/store56x56.png",
+    "112" : "/assets/icons/store112x112.png"
+  },
+  "chrome": {
+    "statusbar": "overlap"
+  },
+  "developer": {
+    "name": "Nguyen Thanh Nam (jkelol111)",
+    "url": "http://github.com/jkelol111"
+  },
+  "type": "certified",
+  "permissions": {
+    "webapps-manage": {
+      "description": "Required to install apps from stores."
+    },
+    "systemXHR": {
+      "description": "Required to fetch from repositories."
+    }
+  },
+  "installs_allowed_from": ["*"]
+}

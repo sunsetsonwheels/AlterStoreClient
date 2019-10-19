@@ -1,5 +1,5 @@
 # AlterStoreClient
-  AlterStore client for KaiOS.
+  Alter(native)Store client for KaiOS.
 
 ## What is this?
 

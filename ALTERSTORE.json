@@ -1,0 +1,7 @@
+{
+    "compat_client_version": "v1",
+    "store_name": "AlterStore (Rolling)",
+    "store_owners": ["jkelol111"],
+    "store_description": "The Alter(native)Store client for KaiOS.",
+    "store_restricted": []
+}
