@@ -1,25 +1,19 @@
 "use strict"
 
 class AlterStoreSDK {
-  constructor() {
-    this.storesListEntry = "alterstoresdk.stores";
-    this.storesList = {};
+  constructor(storeListEntry) {
+    this.errors = {"StoreDoesNotExist": "StoreDoesNotExist: Store list does not exist!",
+                   "HttpRequestFailed": "HttpRequestFailed: HTTP request failed!"};
+    this.storesList = [];
     if(localStorage.getItem(this.storesListEntry)) {
       this.storesList = JSON.parse(localStorage.getItem(this.storesListEntry));
     } else {
-      console.warn("Store list does not exist!");
-    }
-  }
-  promiseMaker(callback) {
-    if(typeof(callback) == "function") {
-      return new Promise(callback(resolve, reject));
-    } else {
-      throw new TypeError("The supplied callback is not a function.");
+      console.warn(this.errors["StoreDoesNotExist"]);
     }
   }
   httpRequest(requestType, requestURL, requestData=null) {
     var request = new XMLHttpRequest({mozSystem: true});
-    return this.promiseMaker((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       request.onreadystatechange = () => {
         if (request.readyState !== 4) return;
         if (request.status >= 200 && request.status < 300) {
@@ -29,8 +23,8 @@ class AlterStoreSDK {
             resolve(request.responseText);
           }
         } else {
-          reject(new Error(request.status,
-                           request.statusText));
+          reject(new Error(this.errors["HttpRequestFailed"]+"("+
+                           request.status+request.statusText+")"));
         }
       };
       request.open(requestType, requestURL, true);
@@ -39,12 +33,30 @@ class AlterStoreSDK {
     });
   }
   addStore(repoURL) {
-    this.httpRequest("GET", repoURL+"/ALTERSTORE.json")
-    .then((repoData) => {
-      console.log(repoData);
-    })
-    .catch((error) => {
-      console.error(error);
+    return new Promise((resolve, reject) => {
+      this.httpRequest("GET", repoURL+"/ALTERSTORE.json")
+      .then((repoData) => {
+        this.storesList.push({"name": repoData["store_name"],
+                              "owners": repoData["store_owners"],
+                              "description": repoData["store_description"],
+                              "restricted": repoData["store_restricted"],
+                              "url": repoURL});
+        localStorage.setItem(this.storesListEntry, JSON.stringify(this.storesList));
+        resolve(this.storesList);
+      })
+      .catch((err) => {
+        reject(err)
+      });
+    });
+  }
+  getAllStores() {
+    return new Promise((resolve, reject) => {
+      if(this.storesList != [] && typeof(this.storesList) == "object") {
+        resolve(this.storesList);
+      } else {
+        reject(new Error(this.errors["StoreDoesNotExist"]));
+      }
+      
     })
   }
   getAppsInSpecificStore(repoName) {
@@ -56,7 +68,7 @@ class AlterStoreSDK {
     }
   }
   getAppsInAllStores() {
-    return this.promiseMaker((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       try {
         var fullList = []
         for(var repo in this.repoList) {

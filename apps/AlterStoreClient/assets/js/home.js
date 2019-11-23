@@ -4,11 +4,11 @@ function displayAboutDialog(clientVersion) {
   const deviceInfo = new UAParser().getResult()["device"];
   alert("AlterStore "+clientVersion+
         " running on "+deviceInfo["vendor"]+" "+deviceInfo["model"]+
-        "\n\nMade with <3 by jkelol111. Licensed under the GPLv3 license.");
+        "\n\nMade with <3 by jkelol111. Licensed under the MIT license.");
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  var alterstore = new AlterStoreSDK();
+  var alterstore = new AlterStoreSDK("AlterStoreClient");
   window.addEventListener("keydown", (e) => {
     switch(e.key) {
       case "SoftLeft":

@@ -1,0 +1,13 @@
+{
+    "selectedRelease": "rolling",
+    "releases": {
+        "rolling": {
+            "storeURL": "jkelol111.github.io/AlterStoreClient/",
+            "adsEnabled": 0
+        },
+        "stable": {
+            "storeURL": "https://github.com/jkelol111/AlterStoreClient/releases",
+            "adsEnabled": 1
+        }
+    }
+}
